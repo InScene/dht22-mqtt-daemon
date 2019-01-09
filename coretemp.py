@@ -24,7 +24,8 @@ pin = config['sensor'].get('pin', 10)
 topic = config['mqtt'].get('topic', 'temperature/dht22')
 decim_digits = config['sensor'].getint('decimal_digits', 2)
 sleep_time = config['sensor'].getint('interval', 60)
-
+user = config['mqtt'].get('user', 'guest')
+password = config['mqtt'].get('password', 'guest')
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -32,6 +33,7 @@ def on_connect(client, userdata, flags, rc):
 
 client = mqtt.Client()
 client.on_connect = on_connect
+client.username_pw_set(user, password)
 client.connect(config['mqtt'].get('hostname', 'homeassistant'),
                config['mqtt'].getint('port', 1883),
                config['mqtt'].getint('timeout', 60))
